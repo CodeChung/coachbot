@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Switch, Link, Route } from 'react-router-dom';
 import GoalPage from '../../routes/GoalPage/GoalPage';
-import ChatPage from '../../routes/ChatPage/ChatPage';
+import CoachPage from '../../routes/CoachPage/CoachPage';
 import MissingPage from '../../routes/MissingPage/MissingPage';
 
 class User extends React.Component {
@@ -16,7 +16,7 @@ class User extends React.Component {
                     <Switch>
                         <Route exact path='/' component={GoalPage}/>
                         <Route path='/login' render={() => <Redirect to='/'/>}/>
-                        <Route path='/goal/:goalId' component={ChatPage}/>
+                        <Route path='/goal/:goalId' component={CoachPage}/>
                         <Route component={MissingPage}/>
                     </Switch>
                 </main>

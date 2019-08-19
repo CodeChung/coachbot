@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import './GoalPage.css'
 import GoalListItem from '../../components/GoalListItem/GoalListItem'
+import GoalForm from '../../components/GoalForm/GoalForm';
 
 class GoalPage extends Component {
     state = {
+        // TODO: actually it'll make more sense if i only fetch metadata at this level and request individual goal info when clicked 
         goals: [{
             id: 1,
             last_logged: new Date().toDateString(),
@@ -46,9 +48,27 @@ class GoalPage extends Component {
         )
     }
     displayGoalForm() {
-        const modalClass = this.state.modalClass === 'modal modal-active' ? 'modal' : 'modal modal-active'
-        console.log('clickaroo')
+        const modalClass = 
+            this.state.modalClass === 'modal modal-active' 
+            ? 'modal' 
+            : 'modal modal-active'
+
         this.setState({modalClass})
+    }
+    addGoal(goal) {
+        // TODO: convert to goal POST to api (request body should return updated goals list)
+        const goals = this.state.goals
+        const newGoal = {
+            id: goals.length + 1,
+            last_logged: 'New Goal',
+            schedule: goal.schedule,
+            title: goal.title,
+            subgoals: [],
+            motivation: [],
+        }
+
+        goals.push(newGoal)
+        this.setState({goals})
     }
     render() {
     const { error } = this.state
@@ -65,7 +85,7 @@ class GoalPage extends Component {
             <div className={this.state.modalClass}>
                 <div className='modal-content'>
                     <span className="close" onClick={() => this.displayGoalForm()}>&times;</span>
-                    <p>Some text in the Modal..</p>
+                    <GoalForm addGoal={(goal) => this.addGoal(goal)}/>
                 </div>
             </div>
         </section>
