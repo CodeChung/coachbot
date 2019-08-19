@@ -12,10 +12,14 @@ export default class LoginPage extends Component {
   state = {
     login: false
   }
-  handleLoginSuccess = () => {
-    const { history } = this.props
-    history.push('/')
+  handleLoginSuccess = (event) => {
+    event.preventDefault()
+    // const { location, history } = this.props
+    // const destination = (location.state || {}).from || '/'
+
+    // history.push(destination)
     this.props.login()
+    this.setState({login: true})
   }
 
   render() {

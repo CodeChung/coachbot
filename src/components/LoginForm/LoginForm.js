@@ -12,7 +12,7 @@ class LoginForm extends Component {
     return (
       <form
         className='LoginForm'
-        onSubmit={this.props.onLoginSuccess}
+        onSubmit={e => this.props.onLoginSuccess(e)}
       >
         <div role='alert'>
           {error && <p className='red'>{error}</p>}
