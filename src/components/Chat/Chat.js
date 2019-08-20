@@ -4,8 +4,8 @@ import './Chat.css';
 class Chat extends React.Component {
     // TODO: pass messages through user context so messages persist between component change
     state = {
-        messages: [],
-        msg: 'chat will be implemented here'
+        messages: ['chatbot will be implemented here', 'most of functionality will be on this page', 'user can rate experience for the day', 'user can set subgoals', 'user can log how much time they spent'],
+        msg: ''
     }
     changeMessage(msg) {
         this.setState({msg})
