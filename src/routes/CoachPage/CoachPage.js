@@ -4,6 +4,7 @@ import Reports from '../../components/Reports/Reports';
 import Stats from '../../components/Stats/Stats';
 import Settings from '../../components/Settings/Settings';
 import Chat from '../../components/Chat/Chat';
+import './CoachPage.css'
 
 class CoachPage extends React.Component {
     componentDidMount() {
@@ -13,20 +14,26 @@ class CoachPage extends React.Component {
     }
 
     render() {
+        const path = this.props.match.path.replace(':goalId', this.props.match.params.goalId)
+        
         return (
             <section className='coach-page'>
-                <Switch>
-                    <Route path='/reports' component={Reports}/>
-                    <Route path='/stats' component={Stats}/>
-                    <Route path='/settings' component={Settings}/>
-                    <Route component={Chat}/>
-                </Switch>
                 <nav className='coach-nav'>
-                    <Link to='/coach'>Coach</Link>
-                    <Link to='/reports'>Reports</Link>
-                    <Link to='/stats'>Stats</Link>
-                    <Link to='/settings'>Settings</Link>
+                    <Link to='/'
+                        onClick={this.props.showNav}>{'<-'}</Link>
+                    <Link to={`${path}/`}>Chat</Link>
+                    {/* <Link to={`${path}/reports`}>Reports</Link> */}
+                    <Link to={`${path}/stats`}>Stats</Link>
+                    <Link to={`${path}/settings`}>Settings</Link>
                 </nav>
+                <div className='coach-view'>
+                    <Switch>
+                        {/* <Route path={`${path}/reports`} component={Reports}/> */}
+                        <Route path={`${path}/stats`}  component={Stats}/>
+                        <Route path={`${path}/settings`} component={Settings}/>
+                        <Route component={Chat}/>
+                    </Switch>
+                </div>
             </section>
         )
     }

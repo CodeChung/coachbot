@@ -29,7 +29,7 @@ class GoalPage extends Component {
             schedule: 'Sa/Su',
             subgoals: [],
             motivation: [],
-        }
+        },
         ],
         modalClass: 'modal',
         error: false
@@ -42,6 +42,7 @@ class GoalPage extends Component {
         const { goals } = this.state
         return goals.map(goal =>
             <GoalListItem
+                hideNav={this.props.hideNav}
                 key={goal.id}
                 goal={goal}
             />

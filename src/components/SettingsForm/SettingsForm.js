@@ -1,7 +1,7 @@
 import React from 'react';
-import './GoalForm.css';
+import './SettingsForm.css'
 
-class GoalForm extends React.Component {
+class SettingsForm extends React.Component {
     state = {
         title: '',
         days: {
@@ -14,8 +14,6 @@ class GoalForm extends React.Component {
             Sat: false,
         },
         error: '',
-        button: 'Add Goal',
-        formTitle: 'New Goal',
     }
     renderDayClass(day) {
         return this.state[day] ? 'add-day' : 'add-day active-day'
@@ -65,7 +63,7 @@ class GoalForm extends React.Component {
         )
         return (
             <form className='add-goal-form'>
-                <legend>{this.props.formTitle || this.state.formTitle}</legend>
+                <legend>Change Goal Settings</legend>
                 <label htmlFor='add-goal-title'>
                     Title
                 </label>
@@ -74,6 +72,13 @@ class GoalForm extends React.Component {
                     required
                     name='add-goal-title'
                     id='add-goal-title'
+                    />
+                <label htmlFor='goal-hours'>
+                    Target Hours:
+                </label>
+                <input
+                    name='goal-hours'
+                    id='goal-hours'
                     />
                 <div className='add-goal-schedule'>
                     <label htmlFor='add-schedule'>
@@ -85,11 +90,11 @@ class GoalForm extends React.Component {
                 <button 
                     disabled={this.state.error}
                     type='submit'>
-                    {this.props.button || this.state.button}
+                    Apply
                 </button>
             </form>
         )
     }
 }
 
-export default GoalForm;
+export default SettingsForm;

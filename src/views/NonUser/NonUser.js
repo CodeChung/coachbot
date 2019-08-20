@@ -8,10 +8,18 @@ import MissingPage from '../../routes/MissingPage/MissingPage';
 class NonUser extends React.Component {
     render() {
         return (
-            <section className='new-user'>
+            <section className='new-user view'>
                 <nav>
-                    <Link to='/register'>Register</Link>
-                    <Link to='/login'>Login</Link>
+                    <Link to='/'>
+                        <span className='logo'>
+                            Coach
+                        </span>
+                    </Link>
+                    <div className='new-user-links'>
+                        <Link to='/register'>Register</Link>
+                        <Link to='/login'>Login</Link>
+                    </div>
+                    
                 </nav>
                 <main>
                     <Switch>

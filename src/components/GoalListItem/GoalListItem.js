@@ -6,7 +6,9 @@ class GoalListItem extends React.Component {
     render() {
         const { goal } = this.props
         return (
-            <Link to={`/goal/${goal.id}`} className='goal-list-item'>
+            <Link to={`/goal/${goal.id}`} 
+                onClick={this.props.hideNav}
+                className='goal-list-item'>
                 <header className='goal-list-header'>
                     <h2>
                         {goal.title}

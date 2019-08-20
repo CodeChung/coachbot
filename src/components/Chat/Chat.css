@@ -1,0 +1,18 @@
+.chat {
+    width: 30%;
+    margin: 0 auto ;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    overflow: hidden;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border: 1px solid #3f455038;
+    position: relative;
+    top: 65px;
+}
+
+.chat form {
+    margin-top: auto;
+}

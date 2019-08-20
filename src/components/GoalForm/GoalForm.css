@@ -1,5 +1,15 @@
 .add-goal-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    margin: 0 auto;
+    height: 400px;
+    line-height: 30px;
+}
 
+.add-goal-form button {
+    margin-top: 30px;
 }
 
 .active-day {
