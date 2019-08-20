@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/coachbot-client/static/css/main.143ba070.chunk.css",
-    "main.js": "/coachbot-client/static/js/main.769b2c58.chunk.js",
-    "main.js.map": "/coachbot-client/static/js/main.769b2c58.chunk.js.map",
+    "main.js": "/coachbot-client/static/js/main.ab0b0d8c.chunk.js",
+    "main.js.map": "/coachbot-client/static/js/main.ab0b0d8c.chunk.js.map",
     "runtime~main.js": "/coachbot-client/static/js/runtime~main.62f3bb67.js",
     "runtime~main.js.map": "/coachbot-client/static/js/runtime~main.62f3bb67.js.map",
     "static/js/2.858a7051.chunk.js": "/coachbot-client/static/js/2.858a7051.chunk.js",
     "static/js/2.858a7051.chunk.js.map": "/coachbot-client/static/js/2.858a7051.chunk.js.map",
     "index.html": "/coachbot-client/index.html",
-    "precache-manifest.f17f2ed13135a3aee7a6927b07b7b577.js": "/coachbot-client/precache-manifest.f17f2ed13135a3aee7a6927b07b7b577.js",
+    "precache-manifest.40c2f00a0c19d09c7a80e44c8f0fd26c.js": "/coachbot-client/precache-manifest.40c2f00a0c19d09c7a80e44c8f0fd26c.js",
     "service-worker.js": "/coachbot-client/service-worker.js",
     "static/css/main.143ba070.chunk.css.map": "/coachbot-client/static/css/main.143ba070.chunk.css.map"
   }

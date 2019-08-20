@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/coachbot-client/precache-manifest.f17f2ed13135a3aee7a6927b07b7b577.js"
+  "/coachbot-client/precache-manifest.40c2f00a0c19d09c7a80e44c8f0fd26c.js"
 );
 
 self.addEventListener('message', (event) => {
