@@ -2,6 +2,7 @@ import React from 'react';
 import User from './views/User/User';
 import NonUser from './views/NonUser/NonUser';
 import './App.css';
+import TokenService from './services/token-service';
 
 class App extends React.Component {
   state = {
@@ -11,6 +12,7 @@ class App extends React.Component {
     this.setState({ user: true })
   }
   logout() {
+    TokenService.clearAuthToken()
     this.setState({ user: false })
   }
   render() {

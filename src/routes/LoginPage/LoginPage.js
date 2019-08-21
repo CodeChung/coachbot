@@ -11,11 +11,9 @@ export default class LoginPage extends Component {
   state = {
     login: false
   }
-  handleLoginSuccess = (event) => {
-    event.preventDefault()
+  handleLoginSuccess = () => {
 
     this.props.login()
-    this.setState({login: true})
   }
 
   render() {
