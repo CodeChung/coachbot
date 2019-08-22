@@ -18,11 +18,19 @@ class Settings extends React.Component {
             <div>
                 <h2>Settings</h2>
                 <SettingsForm />
-                <button></button>
+                <button onClick={() => this.displayDeleteForm()}>
+                    Delete Goal
+                </button>
                 <div className={this.state.modalClass}>
                     <div className='modal-content'>
-                        <span className="close" onClick={() => this.displayGoalForm()}>&times;</span>
-                        <GoalForm addGoal={(goal) => this.addGoal(goal)}/>
+                        <span className="close" onClick={() => this.displayDeleteForm()}>&times;</span>
+                        <h3>Are you sure you want to delete this goal?</h3>
+                        <button>
+                            Yes
+                        </button>
+                        <button onClick={() => this.displayDeleteForm()}>
+                            No
+                        </button>
                     </div>
                 </div>
             </div>

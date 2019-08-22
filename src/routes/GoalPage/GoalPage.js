@@ -6,7 +6,6 @@ import ApiGoalsService from '../../services/goals-service';
 
 class GoalPage extends Component {
     state = {
-        // TODO: actually it'll make more sense if i only fetch metadata at this level and request individual goal info when clicked 
         goals: [],
         modalClass: 'modal',
         error: false
@@ -17,33 +16,33 @@ class GoalPage extends Component {
                 if (res.error) {
                     this.setState({ error: res.error })
                 } else {
-                    const goals = res.map(goal => {
-                        // format meta schedule
-                        const days = {
-                            'Mon': 1,
-                            'Tue': 2,
-                            'Wed': 3,
-                            'Thu': 4,
-                            'Fri': 5,
-                            'Sat': 6,
-                            'Sun': 7
-                        }
-                        const schedule = Object.keys(goal.schedule)
-                            .filter(day => goal.schedule[day])
-                            .sort((a, b) => days[a] - days[b])
-                            .join('/')
-                        goal.schedule = schedule
-                        
-                        return goal
-                    })
-                    
-                    this.setState({goals})
+                    this.setState({goals: res})
                 }
             })
     }
+    formatSchedule(goal) {
+        const days = {
+            'Mon': 1,
+            'Tue': 2,
+            'Wed': 3,
+            'Thu': 4,
+            'Fri': 5,
+            'Sat': 6,
+            'Sun': 7
+        }
+        const schedule = Object.keys(goal.schedule)
+            .filter(day => goal.schedule[day])
+            .sort((a, b) => days[a] - days[b])
+            .join('/')
 
+        return schedule
+    }
     renderGoals() {
         const { goals } = this.state
+        goals.forEach(goal => {
+            goal.schedule = this.formatSchedule(goal)
+            return goal
+        }) 
         return goals.map(goal =>
             <GoalListItem
                 hideNav={this.props.hideNav}
@@ -62,7 +61,13 @@ class GoalPage extends Component {
     }
     addGoal(goal) {
         ApiGoalsService.postGoal(goal)
-            .then(res => console.log(res))
+            .then(res => {
+                if (res.error) {
+                    this.setState({ error: res.error })
+                } else {
+                    this.setState({ goals: res })
+                }
+            })
         this.displayGoalForm()
     }
     render() {
