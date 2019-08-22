@@ -13,10 +13,11 @@ class GoalListItem extends React.Component {
                     <h2>
                         {goal.title}
                     </h2>
+                    <div className='goal-list-duration'>{goal.duration} days left</div>
                 </header>
                 <footer>
                     <span className='goal-list-schedule'>Schedule: {goal.schedule}</span>
-                    <span className='goal-list-date'>Last Log: {goal.last_logged}</span>
+                    <span className='goal-list-date'>Last Log: {goal.last_logged || 'New Goal!'}</span>
                 </footer>
             </Link>
         )

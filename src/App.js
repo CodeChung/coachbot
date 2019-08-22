@@ -16,7 +16,7 @@ class App extends React.Component {
     this.setState({ user: false })
   }
   render() {
-    const currentView = this.state.user ? <User logout={() => this.logout()}/> : <NonUser login={() => this.login()}/>
+    const currentView = TokenService.hasAuthToken() ? <User logout={() => this.logout()}/> : <NonUser login={() => this.login()}/>
     return (
       <div className="App">
         {currentView}

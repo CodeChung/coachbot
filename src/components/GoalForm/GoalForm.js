@@ -2,53 +2,49 @@ import React from 'react';
 import './GoalForm.css';
 
 class GoalForm extends React.Component {
-    state = {
-        title: '',
-        days: {
-            Sun: false,
-            Mon: false,
-            Tue: false,
-            Wed: false,
-            Thu: false,
-            Fri: false,
-            Sat: false,
-        },
-        error: '',
-        button: 'Add Goal',
-        formTitle: 'New Goal',
-    }
-    renderDayClass(day) {
-        return this.state[day] ? 'add-day' : 'add-day active-day'
+    constructor(props) {
+        super(props)
+        this.state = {
+            title: '',
+            duration: 1,
+            days: {
+                Sun: false,
+                Mon: false,
+                Tue: false,
+                Wed: false,
+                Thu: false,
+                Fri: false,
+                Sat: false,
+            },
+            error: '',
+            button: 'Add Goal',
+            formTitle: 'New Goal',
+            rerender: false,
+        }
     }
     switchActiveDay(day) {
         const active = this.state[day] ? false : true
         const { days } = this.state
-        console.log('cheese', active)
         days[day] = active
+        console.log(days)
         this.setState({days})
     }
     submitGoal(event) {
         event.preventDefault()
-        const { title, days } = this.state
+        const { title, days, duration } = this.state
         const validSchedule = Object.keys(days).filter(day => days[day]).length
 
         if (!title) {
             const error = 'Goal must have title'
             this.setState({error})
-        } else if (validSchedule) {
+        } else if (!validSchedule) {
             const error = 'Must choose at least one day'
             this.setState({error})
         } else {
-            let schedule = ''
-            days.forEach(day => {
-                if (days[day]) {
-                    schedule += day + '/'
-                }
-            })
-            schedule.trim('/')
             const goal = {
                 title,
-                schedule
+                schedule: days,
+                duration
             }
             this.props.addGoal(goal)
             this.setState({error: ''})
@@ -61,10 +57,12 @@ class GoalForm extends React.Component {
                 type='button'
                 name='add-goal-schedule day'
                 onClick= {() => this.switchActiveDay(day)}
-                className={this.renderDayClass(day)}>{day}</button>
+                className={this.state.days[day] ? 'add-day' : 'add-day active-day'}>{day}</button>
         )
         return (
-            <form className='add-goal-form'>
+            <form 
+                className='add-goal-form' 
+                onSubmit={(e) => this.submitGoal(e)} >
                 <legend>{this.props.formTitle || this.state.formTitle}</legend>
                 <label htmlFor='add-goal-title'>
                     Title
@@ -81,6 +79,16 @@ class GoalForm extends React.Component {
                     </label>
                     {days}
                 </div>
+                <label htmlFor='add-goal-duration'>
+                    Days to Complete
+                </label>
+                <input
+                    onChange={(e) => this.setState({duration: e.target.value})}
+                    required
+                    name='add-goal-duration'
+                    id='add-goal-duration'
+                    type='number'
+                    />
                 {this.state.error}
                 <button 
                     disabled={this.state.error}

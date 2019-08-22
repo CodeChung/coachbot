@@ -2,40 +2,44 @@ import React, { Component } from 'react'
 import './GoalPage.css'
 import GoalListItem from '../../components/GoalListItem/GoalListItem'
 import GoalForm from '../../components/GoalForm/GoalForm';
+import ApiGoalsService from '../../services/goals-service';
 
 class GoalPage extends Component {
     state = {
         // TODO: actually it'll make more sense if i only fetch metadata at this level and request individual goal info when clicked 
-        goals: [{
-            id: 1,
-            last_logged: new Date().toDateString(),
-            title: 'Karate',
-            schedule: 'M/W/F',
-            subgoals: [],
-            motivation: [],
-        },
-        {
-            id: 2,
-            last_logged: new Date().toDateString(),
-            title: 'Save Money',
-            schedule: 'M/Tu/W/Th/F',
-            subgoals: [],
-            motivation: [],
-        },
-        {
-            id: 3,
-            last_logged: new Date().toDateString(),
-            title: 'Learn Chess',
-            schedule: 'Sa/Su',
-            subgoals: [],
-            motivation: [],
-        },
-        ],
+        goals: [],
         modalClass: 'modal',
         error: false
     }
     componentDidMount() {
-    // TODO: fetch goal items here and setstate
+        ApiGoalsService.getGoals()
+            .then(res => {
+                if (res.error) {
+                    this.setState({ error: res.error })
+                } else {
+                    const goals = res.map(goal => {
+                        // format meta schedule
+                        const days = {
+                            'Mon': 1,
+                            'Tue': 2,
+                            'Wed': 3,
+                            'Thu': 4,
+                            'Fri': 5,
+                            'Sat': 6,
+                            'Sun': 7
+                        }
+                        const schedule = Object.keys(goal.schedule)
+                            .filter(day => goal.schedule[day])
+                            .sort((a, b) => days[a] - days[b])
+                            .join('/')
+                        goal.schedule = schedule
+                        
+                        return goal
+                    })
+                    
+                    this.setState({goals})
+                }
+            })
     }
 
     renderGoals() {
@@ -57,19 +61,9 @@ class GoalPage extends Component {
         this.setState({modalClass})
     }
     addGoal(goal) {
-        // TODO: convert to goal POST to api (request body should return updated goals list)
-        const goals = this.state.goals
-        const newGoal = {
-            id: goals.length + 1,
-            last_logged: 'New Goal',
-            schedule: goal.schedule,
-            title: goal.title,
-            subgoals: [],
-            motivation: [],
-        }
-
-        goals.push(newGoal)
-        this.setState({goals})
+        ApiGoalsService.postGoal(goal)
+            .then(res => console.log(res))
+        this.displayGoalForm()
     }
     render() {
     const { error } = this.state
