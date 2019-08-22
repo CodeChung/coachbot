@@ -1,9 +1,13 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import SettingsForm from '../SettingsForm/SettingsForm';
+import { GoalContext } from '../../context/GoalContext';
+import ApiGoalsService from '../../services/goals-service';
 
 class Settings extends React.Component {
     state = {
         modalClass: 'modal',
+        deleted: false,
     }
     displayDeleteForm() {
         const modalClass = 
@@ -13,7 +17,19 @@ class Settings extends React.Component {
 
         this.setState({modalClass})
     }
+    deleteGoal() {
+        const goalId = this.context.goal.id
+        
+        ApiGoalsService.deleteGoal(goalId)
+            .then(
+                this.setState({ deleted: true })
+            )
+            .catch(res => this.setState({error: res.error}))
+    }
     render() {
+        if (this.state.deleted) {
+            return <Redirect to='/' />
+        }
         return (
             <div>
                 <h2>Settings</h2>
@@ -25,7 +41,7 @@ class Settings extends React.Component {
                     <div className='modal-content'>
                         <span className="close" onClick={() => this.displayDeleteForm()}>&times;</span>
                         <h3>Are you sure you want to delete this goal?</h3>
-                        <button>
+                        <button onClick={() => this.deleteGoal()}>
                             Yes
                         </button>
                         <button onClick={() => this.displayDeleteForm()}>
@@ -37,5 +53,7 @@ class Settings extends React.Component {
         )
     }
 }
+
+Settings.contextType = GoalContext
 
 export default Settings

@@ -21,7 +21,6 @@ class SettingsForm extends React.Component {
     switchActiveDay(day) {
         const active = this.state[day] ? false : true
         const { days } = this.state
-        console.log('cheese', active)
         days[day] = active
         this.setState({days})
     }
@@ -33,7 +32,7 @@ class SettingsForm extends React.Component {
         if (!title) {
             const error = 'Goal must have title'
             this.setState({error})
-        } else if (validSchedule) {
+        } else if (!validSchedule) {
             const error = 'Must choose at least one day'
             this.setState({error})
         } else {

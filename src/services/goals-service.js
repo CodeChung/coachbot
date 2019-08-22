@@ -44,6 +44,20 @@ const ApiGoalsService = {
                     ? res.json().then(e => Promise.reject(e))
                     : res.json()
             )
+    },
+    deleteGoal(goalId) {
+        return fetch(`${config.API_ENDPOINT}/goals/${goalId}`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': `bearer ${TokenService.getAuthToken()}`
+            }
+        })
+        .then(res =>
+            (!res.ok)
+                ? res.json().then(e => Promise.reject(e))
+                : res.json()
+        )
     }
 }
 
