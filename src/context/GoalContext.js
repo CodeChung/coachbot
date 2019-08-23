@@ -14,12 +14,16 @@ const GoalContext = React.createContext({
     setError: () => {},
     clearError: () => {},
     deleteGoal: () => {},
-    setGoal: () => {}
+    setGoal: () => {},
+    logged: () => {},
+    updateChatClient: () => {},
+    updateChatServer: () => {},
 })
 
 class GoalProvider extends React.Component {
     state = {
         goal: nullGoal,
+        chats:[],
         error: null,
     }
     // arrow functions for binding, oh yeah
@@ -34,14 +38,39 @@ class GoalProvider extends React.Component {
     setGoal = (goal) => {
         this.setState({ goal })
     }
+    logged = () => {
+        // we're updating last_logged so first goal conversation doesn't occur again
+        const { goal } = this.state
+        goal.last_logged = true
+
+        this.setState({ goal })
+    }
+
+    updateChatClient = (msg) => {
+        const { chats } = this.state
+
+        chats.push(msg)
+        this.setState({ chats })
+    }
+
+    updateChatServer = (msg) => {
+        const { chats } = this.state
+
+        chats.push(msg)
+        this.setState({ chats })
+    }
 
     render() {
         const value = {
             goal: this.state.goal,
+            chats: [],
             error: this.state.error,
             setError: this.setError,
             clearError: this.clearError,
             setGoal: this.setGoal,
+            logged: this.logged,
+            updateChatClient: this.updateChatClient,
+            updateChatServer: this.updateChatServer,
         }
         return (
             <GoalContext.Provider value={value}>

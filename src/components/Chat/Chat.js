@@ -1,10 +1,11 @@
 import React from 'react';
 import './Chat.css';
+import { GoalContext } from '../../context/GoalContext';
 
 class Chat extends React.Component {
     // TODO: pass messages through user context so messages persist between component change
     state = {
-        messages: ['chatbot will be implemented here', 'most of functionality will be on this page', 'user can rate experience for the day', 'user can set subgoals', 'user can log how much time they spent'],
+        messages: ['hey there champ, coach here, dont forget we have the state championship in ___ in ___ days. You gotta stay focused, '],
         msg: ''
     }
     changeMessage(msg) {
@@ -38,5 +39,7 @@ class Chat extends React.Component {
         )
     }
 }
+
+Chat.contextType = GoalContext
 
 export default Chat

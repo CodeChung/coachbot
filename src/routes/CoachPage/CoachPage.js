@@ -7,6 +7,7 @@ import Chat from '../../components/Chat/Chat';
 import './CoachPage.css'
 import { GoalContext } from '../../context/GoalContext';
 import ApiGoalsService from '../../services/goals-service';
+import ChatService from '../../services/chat-service';
 
 class CoachPage extends React.Component {
     state = {
@@ -16,10 +17,19 @@ class CoachPage extends React.Component {
         const { goalId }= this.props.match.params
         ApiGoalsService.getGoalById(goalId)
             .then(res => {
-                console.log(res)
                 this.context.setGoal(res[0])
             })
             .catch(res => this.context.setError({ error: res.error }))
+        
+        console.log('yolo')
+        if (!this.context.goal.last_logged) {
+            ChatService.getNewUserMessage(goalId)
+                .then(res => {
+                    console.log(res)
+                })
+
+            this.context.logged()
+        }
     }
 
     render() {
