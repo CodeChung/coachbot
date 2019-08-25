@@ -21,12 +21,18 @@ class CoachPage extends React.Component {
             })
             .catch(res => this.context.setError({ error: res.error }))
         
-        console.log('yolo')
-        if (!this.context.goal.last_logged) {
-            ChatService.getNewUserMessage(goalId)
+        // get welcome message from bot 
+        if (!this.context.chats.length) {
+            ChatService.getNewUserMessage(goalId, 'new goal')
                 .then(res => {
-                    console.log(res)
+                    if (res.msg) {
+                        console.log(res.msg)
+                        this.context.updateChatServer(res.msg)
+                    } else {
+                        throw new Error({ error: 'Something went wrong, please try again'})
+                    }
                 })
+                .catch(res => this.context.setError({ error: res.error }))
 
             this.context.logged()
         }
@@ -41,13 +47,13 @@ class CoachPage extends React.Component {
                     <Link to='/'
                         onClick={this.props.showNav}>{'<-'}</Link>
                     <Link to={`${path}/`}>Chat</Link>
-                    {/* <Link to={`${path}/reports`}>Reports</Link> */}
+                    <Link to={`${path}/reports`}>Reports</Link>
                     <Link to={`${path}/stats`}>Stats</Link>
                     <Link to={`${path}/settings`}>Settings</Link>
                 </nav>
                 <div className='coach-view'>
                     <Switch>
-                        {/* <Route path={`${path}/reports`} component={Reports}/> */}
+                        <Route path={`${path}/reports`} component={Reports}/>
                         <Route path={`${path}/stats`}  component={Stats}/>
                         <Route path={`${path}/settings`} component={Settings}/>
                         <Route component={Chat}/>
