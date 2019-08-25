@@ -11,30 +11,32 @@ import ApiGoalsService from '../../services/goals-service';
 import ChatService from '../../services/chat-service';
 
 class CoachPage extends React.Component {
-    state = {
-
-    }
-    componentDidMount() {
+    async componentDidMount() {
         const { goalId }= this.props.match.params
+        // Here we get data for our specific goal
         ApiGoalsService.getGoalById(goalId)
             .then(res => {
                 this.context.setGoal(res[0])
             })
             .catch(res => this.context.setError({ error: res.error }))
         
-        // get welcome message from bot 
-        if (!this.context.chats.length) {
-            ChatService.getNewUserMessage(goalId, 'new goal')
-                .then(res => {
-                    if (res.msg) {
-                        console.log(res.msg)
-                        this.context.updateChatServer(res.msg, goalId)
-                    } else {
-                        throw new Error({ error: 'Something went wrong, please try again'})
-                    }
-                })
-                .catch(res => this.context.setError({ error: res.error }))
+        // here we get conversation for specific goal
+        try {
+            let chat = await ChatService.getChat(goalId)
+            if (!chat.length) {
+                await ChatService.postMessage(goalId)
+                chat = await ChatService.getChat(goalId)
+            }
+            if (chat.error) {
+                this.context.setError({ error: chat.error })
+            } else {
+                console.log(chat)
+            }
+        } catch(err) {
+            this.context.setError({ error: 'Something went wrong, try again' })
         }
+        
+
     }
 
     render() {

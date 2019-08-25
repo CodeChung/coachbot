@@ -50,6 +50,10 @@ class GoalProvider extends React.Component {
         this.setState({ goals })
     }
 
+    setupChat = (goalId) => {
+
+    }
+
     updateChatClient = (msg, goalId) => {
         const { chats } = this.state
 
@@ -61,7 +65,7 @@ class GoalProvider extends React.Component {
         this.setState({ chats })
 
         // After updating chat context, pass new msg from client to server
-        ChatService.getNewUserMessage(goalId, msg)
+        ChatService.postMessage(goalId, msg)
             .then(res => {
                 console.log('RES', res)
                 this.updateChatServer(res.msg, goalId)
