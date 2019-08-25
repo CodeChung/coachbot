@@ -4,7 +4,8 @@ import { GoalContext } from '../../context/GoalContext';
 
 class Chat extends React.Component {
     state = {
-        msg: ''
+        msg: '',
+        messages: []
     }
     changeMessage(msg) {
         this.setState({msg})
@@ -12,8 +13,9 @@ class Chat extends React.Component {
     addMessage(event) {
         event.preventDefault()
         let { msg } = this.state
+        const { goalId } = this.props
         
-        this.context.updateChatClient(msg)
+        this.context.updateChatClient(msg, goalId)
 
         msg = ''
         this.setState({
@@ -21,7 +23,8 @@ class Chat extends React.Component {
         })
     }
     render() {
-        const messages = this.context.chats.map((message, index) => {
+        const { goalId } = this.props
+        const messages = this.context.chats[`chat_${goalId}`].map((message, index) => {
             if (message.user === 1) {
                 return <div className='user-1 message' key={index}>{message.msg}</div>
             } else {

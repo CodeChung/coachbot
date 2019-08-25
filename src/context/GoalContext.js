@@ -4,28 +4,34 @@ import ChatService from '../services/chat-service'
 const nullGoal = {
     id: null,
     title: '',
-    last_logged: null,
     motivations: [],
     duration: null,
     user_id: null,
 }
 
+const nullGoals = {
+    goal_0: nullGoal
+}
+
+const nullChats = {
+}
+
 const GoalContext = React.createContext({
-    goal: nullGoal,
+    goals: nullGoals,
+    chats: nullChats,
     error: null,
     setError: () => {},
     clearError: () => {},
     deleteGoal: () => {},
     setGoal: () => {},
-    logged: () => {},
     updateChatClient: () => {},
     updateChatServer: () => {},
 })
 
 class GoalProvider extends React.Component {
     state = {
-        goal: nullGoal,
-        chats:[],
+        goals: nullGoals,
+        chats: nullChats,
         error: null,
     }
     // arrow functions for binding, oh yeah
@@ -38,56 +44,55 @@ class GoalProvider extends React.Component {
     }
 
     setGoal = (goal) => {
-        this.setState({ goal })
-    }
-    logged = () => {
-        // we're updating last_logged so first goal conversation doesn't occur again
-        const { goal } = this.state
-        goal.last_logged = true
-        goal.hello = 'hello'
-
-        this.setState({ goal })
+        const id = goal.id
+        const { goals } = this.state
+        goals[`goal_${id}`] = goal
+        this.setState({ goals })
     }
 
-    updateChatClient = (msg) => {
+    updateChatClient = (msg, goalId) => {
         const { chats } = this.state
+
         const message = {
             msg,
             user: 2
         }
-        chats.push(message)
+        chats[`chat_${goalId}`].push(message)
         this.setState({ chats })
 
         // After updating chat context, pass new msg from client to server
-        const { goal } = this.state
-        ChatService.getNewUserMessage(goal.id, msg)
+        ChatService.getNewUserMessage(goalId, msg)
             .then(res => {
-                this.updateChatServer(res.msg)
+                console.log('RES', res)
+                this.updateChatServer(res.msg, goalId)
             })
             .catch(res => {
                 this.setState({ error: res.error })
             })
     }
 
-    updateChatServer = (msg) => {
+    updateChatServer = (msg, goalId) => {
         const { chats } = this.state
         const message = {
             msg,
             user: 1
         }
-        chats.push(message)
+
+        if (!chats[`chat_${goalId}`]) {
+            chats[`chat_${goalId}`] = []
+        }
+        chats[`chat_${goalId}`].push(message)
         this.setState({ chats })
     }
 
     render() {
         const value = {
-            goal: this.state.goal,
+            goals: this.state.goals,
             chats: this.state.chats,
             error: this.state.error,
             setError: this.setError,
             clearError: this.clearError,
             setGoal: this.setGoal,
-            logged: this.logged,
             updateChatClient: this.updateChatClient,
             updateChatServer: this.updateChatServer,
         }

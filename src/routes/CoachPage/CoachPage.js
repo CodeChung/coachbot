@@ -4,6 +4,7 @@ import Reports from '../../components/Reports/Reports';
 import Stats from '../../components/Stats/Stats';
 import Settings from '../../components/Settings/Settings';
 import Chat from '../../components/Chat/Chat';
+import Spinner from '../../components/Spinner/Spinner';
 import './CoachPage.css'
 import { GoalContext } from '../../context/GoalContext';
 import ApiGoalsService from '../../services/goals-service';
@@ -27,20 +28,18 @@ class CoachPage extends React.Component {
                 .then(res => {
                     if (res.msg) {
                         console.log(res.msg)
-                        this.context.updateChatServer(res.msg)
+                        this.context.updateChatServer(res.msg, goalId)
                     } else {
                         throw new Error({ error: 'Something went wrong, please try again'})
                     }
                 })
                 .catch(res => this.context.setError({ error: res.error }))
-
-            this.context.logged()
         }
     }
 
     render() {
         const path = this.props.match.path.replace(':goalId', this.props.match.params.goalId)
-    
+        const goalId = this.props.match.params.goalId
         return (
             <section className='coach-page'>
                 <nav className='coach-nav'>
@@ -53,10 +52,16 @@ class CoachPage extends React.Component {
                 </nav>
                 <div className='coach-view'>
                     <Switch>
-                        <Route path={`${path}/reports`} component={Reports}/>
-                        <Route path={`${path}/stats`}  component={Stats}/>
-                        <Route path={`${path}/settings`} component={Settings}/>
-                        <Route component={Chat}/>
+                        <Route path={`${path}/reports`} render={() => <Reports goalId={goalId} />} />
+                        <Route path={`${path}/stats`}  render={() => <Stats goalId={goalId} />} />
+                        <Route path={`${path}/settings`} render={() => <Settings goalId={goalId} />} />
+                        <Route render={() => {
+                            return this.context.chats[`chat_${goalId}`]
+                            ?
+                            <Chat goalId={goalId} />
+                            :
+                            <Spinner />
+                        }}/>
                     </Switch>
                 </div>
             </section>

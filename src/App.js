@@ -3,6 +3,7 @@ import User from './views/User/User';
 import NonUser from './views/NonUser/NonUser';
 import './App.css';
 import TokenService from './services/token-service';
+import { GoalContext } from './context/GoalContext';
 
 class App extends React.Component {
   state = {
@@ -24,5 +25,7 @@ class App extends React.Component {
     );
   }
 }
+
+App.contextType = GoalContext;
 
 export default App;
