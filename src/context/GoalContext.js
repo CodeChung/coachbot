@@ -24,6 +24,7 @@ const GoalContext = React.createContext({
     clearError: () => {},
     deleteGoal: () => {},
     setGoal: () => {},
+    setChat: () => {},
     updateChatClient: () => {},
     updateChatServer: () => {},
 })
@@ -50,22 +51,25 @@ class GoalProvider extends React.Component {
         this.setState({ goals })
     }
 
-    setupChat = (goalId) => {
-
-    }
-
-    updateChatClient = (msg, goalId) => {
+    setChat = (goalId, chat) => {
         const { chats } = this.state
 
-        const message = {
-            msg,
-            user: 2
+        chats[`chat_${goalId}`] = chat
+        this.setState({ chats })
+    }
+
+    updateChatClient = (message, goalId) => {
+        const { chats } = this.state
+
+        const msg = {
+            message,
+            user_id: 1 
         }
-        chats[`chat_${goalId}`].push(message)
+        chats[`chat_${goalId}`].push(msg)
         this.setState({ chats })
 
         // After updating chat context, pass new msg from client to server
-        ChatService.postMessage(goalId, msg)
+        ChatService.postMessage(goalId, message)
             .then(res => {
                 console.log('RES', res)
                 this.updateChatServer(res.msg, goalId)
@@ -75,17 +79,14 @@ class GoalProvider extends React.Component {
             })
     }
 
-    updateChatServer = (msg, goalId) => {
+    updateChatServer = (message, goalId) => {
         const { chats } = this.state
-        const message = {
-            msg,
-            user: 1
+        const msg = {
+            message,
+            user_id: 0
         }
 
-        if (!chats[`chat_${goalId}`]) {
-            chats[`chat_${goalId}`] = []
-        }
-        chats[`chat_${goalId}`].push(message)
+        chats[`chat_${goalId}`].push(msg)
         this.setState({ chats })
     }
 
@@ -97,6 +98,7 @@ class GoalProvider extends React.Component {
             setError: this.setError,
             clearError: this.clearError,
             setGoal: this.setGoal,
+            setChat: this.setChat,
             updateChatClient: this.updateChatClient,
             updateChatServer: this.updateChatServer,
         }

@@ -30,7 +30,7 @@ class CoachPage extends React.Component {
             if (chat.error) {
                 this.context.setError({ error: chat.error })
             } else {
-                console.log(chat)
+                this.context.setChat(goalId, chat)
             }
         } catch(err) {
             this.context.setError({ error: 'Something went wrong, try again' })
