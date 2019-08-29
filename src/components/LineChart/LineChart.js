@@ -1,11 +1,12 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
+import moment from 'moment';
 import './LineChart.css';
 
 //TODO: get this data from api later
 
-const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+const graphData = {
+    labels: [],
     datasets: [
         {
             label: 'Monthly Ratings',
@@ -26,27 +27,59 @@ const data = {
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: [5, 3, 7, 8, 5, 10, 4]
+            data: []
         }
     ]
 };
 
-class LineChart extends React.Component {
+const options = {
+    scales: {
+        yAxes : [{
+            ticks : {
+                max : 10,    
+                min : 0
+            }
+        }]
+    }
+}
 
-    componentDidMount() {
-        const { datasets } = this.refs.chart.chartInstance.data
-        console.log(datasets[0].data);
+class LineChart extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            data: {}
+        }
+    }
+    componentDidUpdate(prevProps) {
+        const { ratings } = this.props
+        console.log(ratings, prevProps.ratings)
+        if (ratings.length !== prevProps.ratings.length) {
+            this.cleanData(ratings)
+        }
+    }
+    cleanData(ratings) {
+        const labels = []
+        const data = []
+        ratings.forEach(rating => {
+            if (rating.week) {
+                const date = moment(rating.week).utc().format('MM-DD-YY')
+                const avgRating = rating.sum / rating.count
+
+                labels.push(`Week of ${date}`)
+                data.push(avgRating)
+            } else if (rating.day) {
+                const date = moment(rating.day).utc().format('MM-DD-YY')
+                console.log(date, rating.rating)
+                labels.push(date)
+                data.push(rating.rating)
+            }
+        })
+        graphData.labels = labels
+        graphData.datasets[0].data = data
+        this.setState({ data: graphData })
     }
     render() {
-        const options = {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
+        const { data } = this.state
         return (
             <div className='line-chart'>
                 <Line ref='chart' 

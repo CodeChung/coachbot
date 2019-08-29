@@ -15,7 +15,21 @@ const LogsService = {
                     ? res.json().then(e => Promise.reject(e))
                     : res.json()
             )
-    }
+    },
+    getDailyRatings(goalId) {
+        return fetch(`${config.API_ENDPOINT}/logs/daily/${goalId}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': `bearer ${TokenService.getAuthToken()}`
+            },
+        })
+            .then(res =>
+                (!res.ok)
+                    ? res.json().then(e => Promise.reject(e))
+                    : res.json()
+            )
+    },
 }
 
 export default LogsService
