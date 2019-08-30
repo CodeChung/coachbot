@@ -58,6 +58,7 @@ class LineChart extends React.Component {
         }
     }
     cleanData(ratings) {
+        let label
         const labels = []
         const data = []
         ratings.forEach(rating => {
@@ -67,6 +68,7 @@ class LineChart extends React.Component {
 
                 labels.push(`Week of ${date}`)
                 data.push(avgRating)
+                
             } else if (rating.day) {
                 const date = moment(rating.day).utc().format('MM-DD-YY')
                 console.log(date, rating.rating)
@@ -76,6 +78,7 @@ class LineChart extends React.Component {
         })
         graphData.labels = labels
         graphData.datasets[0].data = data
+        graphData.datasets[0].label = label
         this.setState({ data: graphData })
     }
     render() {

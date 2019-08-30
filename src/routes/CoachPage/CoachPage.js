@@ -23,6 +23,8 @@ class CoachPage extends React.Component {
         // here we get conversation for specific goal
         try {
             let chat = await ChatService.getChat(goalId)
+            chat.shift()
+            console.log(chat)
             if (!chat.length) {
                 await ChatService.postMessage(goalId)
                 chat = await ChatService.getChat(goalId)

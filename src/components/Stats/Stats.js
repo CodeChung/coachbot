@@ -8,20 +8,26 @@ import Spinner from '../Spinner/Spinner';
 
 class Stat extends React.Component {
     state = {
-        type: 'weekly',
+        type: 'daily',
         error: '',
         data: [],
-        loaded: false
+        loaded: false,
+        stats: {}
+
     }
     componentDidMount() {
         const { type } = this.state
+        const { goalId } = this.props
         this.changeGraphType(type)
+        LogsService.getGoalStats(goalId)
+            .then(res => {
+                this.setState({ stats: res })
+            })
 
         this.setState({ loaded: true })
     }
     changeGraphType(type) {
         const { goalId } = this.props
-        console.log(type)
         if (type === 'weekly') {
             LogsService.getWeeklyRatings(goalId)
                 .then(res => {
@@ -39,7 +45,6 @@ class Stat extends React.Component {
                     this.setState({ error: res.error })
                 })
         }
-
     }
     render() {
         const { data } = this.state
@@ -50,13 +55,11 @@ class Stat extends React.Component {
                 <div className='stats-page'>
                     <h2>Stats</h2>
                     <select onChange={(e) => this.changeGraphType(e.target.value)}>
-                        <option value='weekly'>Weekly</option>
                         <option value='daily'>Daily</option>
+                        <option value='weekly'>Weekly</option>
                     </select>
                     {this.state.error || <LineChart ratings={data}/>}
-                    <p>Longest Streak: 20 days</p>
-                    <p>Total hours: 300 hrs</p>
-                    <p>33 hrs to goal completion</p>
+                    <p>Total Days Spent: {this.state.stats.count}</p>
                 </div>
             )
         }
